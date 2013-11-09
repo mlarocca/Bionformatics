@@ -1,0 +1,1 @@
+I created a small lib (yet to be refined) that provides generators for the two problems (given the size of points generates a valid input), and utility to check solutions and test algorithms that should solve the problem. And also utility to help profile these algorithms.
