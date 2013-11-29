@@ -40,7 +40,7 @@ def generate_n_points(n):
 
 def turnpike_random_instance(n_points):
   """ Generate a random instance of the Turnpike problem.
-      :param n_points: The number of points to be placed on the circle
+      :param n_points: The number of points to be placed on the segment
       :type n_points: int
       :invariant: n_points > 1 At least two points are needed for a meaningful instance
       :return: A sorted list of n_points * (n_points-1) + 2 distances, including 0 and 
@@ -223,5 +223,72 @@ def beltway_profiling(algorithm, input_size_step=5, max_input_size=50):
   for n_points in xrange(10, max_input_size, input_size_step):
     profile.run('beltway_random_testing(algorithm, 1000, %d, %d)' % (n_points, n_points), 'beltway_profile_%d.txt' % n_points)        
   
+def max_difference(n):
+  points = range(n)
+  
+  for _ in xrange(10):
+    cw_dists = []
+    ccw_dists = []
+    circumference = points[n-1] + 1
+    for i in xrange(n):
+      for j in xrange(i+1, n):
+        cw = points[j] - points[i]  #point j follows point i on the segment generated
+        cw_dists.append(cw)  #CW distance
+        ccw_dists.append(circumference - cw)  #CCW distance
+    print points
+    print cw_dists
+    print ccw_dists
+    print sum(ccw_dists) - sum(cw_dists)
+                
+    i = randrange(n)
+    for j in xrange(i,n):
+      points[j] += 1
+    
+def difference(points):
+  n = len(points)
+  cw_dists = []
+  ccw_dists = []
+  circumference = points[n-1] + 1
+  for i in xrange(n):
+    for j in xrange(i+1, n):
+      cw = points[j] - points[i]  #point j follows point i on the segment generated
+      cw_dists.append(cw)  #CW distance
+      ccw_dists.append(circumference - cw)  #CCW distance
+  print points
+  print cw_dists
+  print ccw_dists
+  print sum(ccw_dists) - sum(cw_dists)
+
+  for _ in xrange(n):
+    cw_dists = []
+    ccw_dists = []
+    first = randrange(n)
+    for i in xrange(first, n):
+      for j in xrange(i+1, n):
+        cw = points[j] - points[i]  #point j follows point i on the segment generated
+        cw_dists.append(cw)  #CW distance
+        ccw_dists.append(circumference - cw)  #CCW distance
+        
+      for j in xrange(first): #up to first - 1
+        cw = points[i] - points[j]  #point j precedes point i on the segment generated
+        cw_dists.append(cw)  #CW distance
+        ccw_dists.append(circumference - cw)  #CCW distance
+     
+    #Then, completes the circle with points between the origin and first   
+    for i in xrange(first): # up to first - 1
+      for j in xrange(i+1, first):
+        cw = points[j] - points[i]  #point j follows point i on the segment generated
+        cw_dists.append(cw)  #CW distance
+        ccw_dists.append(circumference - cw)  #CCW distance
+        
+    print "\n", first
+    print cw_dists
+    print ccw_dists
+    print sum(ccw_dists) - sum(cw_dists)
+  
 if __name__ == '__main__':
-    pass
+  difference([0, 2, 3, 4, 5])
+  #difference([0, 1, 3, 4, 5])
+  #difference([0, 1, 2, 4, 5])
+  #difference([0, 1, 2, 3, 5])
+  #max_difference(5)
